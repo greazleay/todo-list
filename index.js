@@ -1,4 +1,5 @@
-import { addH, addPara, addForm } from './components.js';
+import { addH, addPara, addForm, addTRH } from './components.js';
+import { renderProjects } from './script.js';
 
 const body = document.querySelector('body');
 
@@ -47,4 +48,9 @@ container.appendChild(footer);
 
 addPara('© 2021 Pollaroid All rights reserved', footer)
 
-addForm(content)
+// addForm(content)
+
+const table = document.createElement('table');
+addTRH(table)
+renderProjects(table)
+content.appendChild(table)
