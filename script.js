@@ -1,4 +1,4 @@
-import { addTRD } from "./components.js";
+import { addTRD, addli } from "./components.js";
 
 class Task {
     constructor(title, description, dueDate, priority) {
@@ -38,6 +38,25 @@ let allProjects = [
                 priority: 'Low'
             }
         ]
+    },
+
+    {
+        name: 'Casino Royale',
+        tasks: [
+            {
+                title: 'Play blackjack',
+                description: 'The need to play more',
+                dueDate: '07/29/2021',
+                priority: 'Medium'
+            },
+        
+            {
+                title: 'Earn more',
+                description: 'more money is needed',
+                dueDate: '07/22/2021',
+                priority: 'Low'
+            }
+        ]
     }
 ]
 
@@ -52,11 +71,18 @@ function setProjects() {
     localStorage.setItem('allProjects', JSON.stringify(allProjects))
 }
 
-export function renderProjects(parent) {
+export function renderTasks(parent) {
     allProjects.forEach(project => {
         project.tasks.sort((a, b) =>  new Date(a.dueDate) - new Date(b.dueDate)).forEach(task => {
             addTRD(parent, task.title, task.description, task.dueDate, task.priority)
         })
     })
 }
+
+export function renderProjects(parent) {
+    allProjects.forEach(project => {
+        addli(parent, project.name)
+    })
+}
+
 

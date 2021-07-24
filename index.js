@@ -1,5 +1,5 @@
-import { addH, addPara, addForm, addTRH } from './components.js';
-import { renderProjects } from './script.js';
+import { addH, addPara, addTRH, addButton, taskForm } from './components.js';
+import { renderProjects ,renderTasks } from './script.js';
 
 const body = document.querySelector('body');
 
@@ -16,28 +16,30 @@ const main = document.createElement('main');
 container.appendChild(main);
 
 const sidebar = document.createElement('div');
-sidebar.classList.add('side-bar')
+sidebar.classList.add('side-bar');
 main.appendChild(sidebar);
 
 addH(3, 'Home', sidebar);
 addH(3, 'Today', sidebar);
 addH(3, 'This Week', sidebar);
 
-const task = document.createElement('div');
-task.classList.add('add-task')
-sidebar.appendChild(task);
+// const task = document.createElement('div');
+// task.classList.add('add-task')
+// sidebar.appendChild(task);
 
-const img = document.createElement('img');
-img.src = './images/addtask.png';
-task.appendChild(img)
+// const img = document.createElement('img');
+// img.src = './images/addtask.png';
+// task.appendChild(img)
 
-addPara('Add Task', task);
+// addPara('Add Task', task);
 
-const projects = document.createElement('div');
-sidebar.classList.add('projects')
-sidebar.appendChild(projects);
+const projectlist = document.createElement('ul');
+projectlist.classList.add('projects');
+sidebar.appendChild(projectlist);
 
-addH(1, 'Projects', projects);
+addH(1, 'Projects', projectlist);
+addButton('button', '+ New Project', projectlist)
+renderProjects(projectlist)
 
 const content = document.createElement('div');
 content.classList.add('content')
@@ -48,9 +50,9 @@ container.appendChild(footer);
 
 addPara('© 2021 Pollaroid All rights reserved', footer)
 
-// addForm(content)
-
 const table = document.createElement('table');
 addTRH(table)
-renderProjects(table)
+renderTasks(table)
 content.appendChild(table)
+
+taskForm(content)

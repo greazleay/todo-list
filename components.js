@@ -13,7 +13,7 @@ function addInput(name, type, parent) {
     parent.appendChild(label);
 }
 
-function addButton(type, text, parent) { 
+export function addButton(type, text, parent) { 
     const button = document.createElement('button');
     button.type = type;
     button.textContent = text
@@ -80,11 +80,33 @@ export function addTRD(parent, title, description, dueDate, priority) {
     parent.appendChild(tr)
 }
 
-export function addForm(parent) {
+export function projectForm(parent) {
+    const div = document.createElement('div');
+    div.classList.add('form-popup');
+    const form = document.createElement('form');
+    addH(2, 'New Project', form)
+    addInput('Name', 'text', form);
+    addButton('button', 'Cancel', form);
+    addButton('submit', 'Add Project', form);
+    div.appendChild(form)
+    parent.appendChild(div)
+}
+
+export function taskForm(parent) {
+    const div = document.createElement('div');
+    div.classList.add('form-popup');
+    div.classList.add('form-popup-task');
     const form = document.createElement('form');
     addInput('Title:', 'text', form);
-    addInput('Due Date:', 'date', form)
-    addSelect('Priority:', form)
-    addTextArea('Description:', form)
-    parent.appendChild(form)
+    addInput('Due Date:', 'date', form);
+    addSelect('Priority:', form);
+    addTextArea('Description:', form);
+    div.appendChild(form)
+    parent.appendChild(div)
+}
+
+export function addli(parent, text) {
+    const li = document.createElement('li');
+    li.textContent = text;
+    parent.appendChild(li);
 }
