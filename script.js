@@ -1,5 +1,3 @@
-import { addTRD, addli, projectForm } from "./components.js";
-
 class Task {
     constructor(title, description, dueDate, priority) {
         this.title = title;
@@ -20,75 +18,86 @@ class Project {
     }
 }
 
-let allProjects = [
-    {
-        name: 'House Chores',
-        tasks: [
-            {
-                title: 'Sweep',
-                description: 'sweep the whole floor',
-                dueDate: '07/31/2021',
-                priority: 'High'
-            },
-        
-            {
-                title: 'Eat',
-                description: 'eat breakfast',
-                dueDate: '07/28/2021',
-                priority: 'Low'
-            }
-        ]
-    },
-
-    {
-        name: 'Casino Royale',
-        tasks: [
-            {
-                title: 'Play blackjack',
-                description: 'The need to play more',
-                dueDate: '07/29/2021',
-                priority: 'Medium'
-            },
-        
-            {
-                title: 'Earn more',
-                description: 'more money is needed',
-                dueDate: '07/22/2021',
-                priority: 'Low'
-            }
-        ]
-    }
-]
-
 function getProjects() {
     if (localStorage.length === 0) return [];
     return JSON.parse(localStorage.getItem('allProjects')).map(project => {
         return new Project(project.name, project.tasks)
     });
-}
+};
 
 function setProjects() {
     localStorage.setItem('allProjects', JSON.stringify(allProjects))
+};
+
+let allProjects = getProjects();
+
+function getProjectNames() {
+    const plist = []
+    allProjects.forEach((project) => {
+    plist.push(project.name);
+  });
+  return plist
 }
 
-export function renderTasks(parent) {
+function clearNode(parent, tag) {
+    Array.from(parent.childNodes).filter(e => e.nodeName === tag).forEach(child => {
+        parent.removeChild(child)
+    })
+};
+
+function clearByClass(parent, cname) {
+    Array.from(parent.childNodes).filter(e => e.className === cname).forEach(child => {
+        parent.removeChild(child)
+    })
+};
+
+(function renderTasks(parent) {
     allProjects.forEach(project => {
         project.tasks.sort((a, b) =>  new Date(a.dueDate) - new Date(b.dueDate)).forEach(task => {
             addTRD(parent, task.title, task.description, task.dueDate, task.priority)
         })
     })
-}
+})(table);
 
-export function renderProjects(parent) {
+(function renderProjects(parent) {
     allProjects.forEach(project => {
-        addli(parent, project.name)
+        addli(parent, project.name);
     })
-}
+})(projectlist);
 
-export function formPopup(cname) {
-    document.querySelector(cname).style.display = 'block' 
-}
+document.querySelector('.new-project').addEventListener('click', () => {
+    document.querySelector('.form-popup').style.display = 'block';
+});
 
+document.querySelector('.pform').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const submit = document.querySelector('.submit').value;
+    allProjects.push(new Project(submit));
+    setProjects();
+    document.querySelector('.form-popup').style.display = 'none'
+    clearNode(projectlist, "LI");
+    renderProjects(projectlist)
+});
+
+document.querySelector('.new-task').addEventListener('click', () => {
+    document.querySelector('.form-popup-task').style.display = 'block';
+    const tform = document.querySelector('.tform');
+    addSelect('Project', getProjectNames(), tform, 'label-select');
+});
+
+window.onclick = function (e) {
+    const tform = document.querySelector('.tform');
+    switch (true) {
+      case e.target.className === "form-popup":
+        document.querySelector(".form-popup").style.display = "none";
+        break;
+      case e.target.className === "form-popup form-popup-task":
+        document.querySelector(".form-popup-task").style.display = "none";
+        clearByClass(tform, 'label-select');
+        break;
+    }
+  };
+ 
 
 
 
