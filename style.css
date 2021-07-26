@@ -66,8 +66,15 @@ main {
     background-color: #25d6a2;
 }
 
-.add-task {
-    margin: 1rem 0 0 1rem;
+.side-bar button:nth-last-child(2) {
+    background: url('./images/addtask.png');
+    background-position: 1rem 1rem;
+    background-repeat: no-repeat;
+    width: 8rem;
+    height: 8rem;
+    padding: 8px 8px 8px 32px;
+    font-size: 1rem;
+    border: 1px solid white;
 }
 
 .content {
@@ -95,6 +102,10 @@ th, td {
 
 button {
     border: none;
+}
+
+ul {
+    list-style: none;
 }
 
 .form-popup {

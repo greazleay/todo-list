@@ -1,4 +1,4 @@
-import { addTRD, addli } from "./components.js";
+import { addTRD, addli, projectForm } from "./components.js";
 
 class Task {
     constructor(title, description, dueDate, priority) {
@@ -84,5 +84,11 @@ export function renderProjects(parent) {
         addli(parent, project.name)
     })
 }
+
+export function formPopup(cname) {
+    document.querySelector(cname).style.display = 'block' 
+}
+
+
 
 

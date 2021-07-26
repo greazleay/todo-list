@@ -1,22 +1,26 @@
+// import { handleProject } from "./script.js";
+
 function addOption(text, parent) {
     const option = document.createElement('option');
     option.textContent = text;
     parent.appendChild(option)
 }
 
-function addInput(name, type, parent) {
+function addInput(name, type, parent, cname) {
     const label = document.createElement('label');
     label.textContent = name; 
     const input = document.createElement('input');
     input.type = type;
+    input.className = cname;
     label.appendChild(input)
     parent.appendChild(label);
 }
 
-export function addButton(type, text, parent) { 
+export function addButton(type, text, parent, toclick) { 
     const button = document.createElement('button');
     button.type = type;
-    button.textContent = text
+    button.onclick = toclick;
+    button.textContent = text;
     parent.appendChild(button);
 }
 
@@ -85,7 +89,7 @@ export function projectForm(parent) {
     div.classList.add('form-popup');
     const form = document.createElement('form');
     addH(2, 'New Project', form)
-    addInput('Name', 'text', form);
+    addInput('Name', 'text', form, 'submit');
     addButton('button', 'Cancel', form);
     addButton('submit', 'Add Project', form);
     div.appendChild(form)
@@ -101,8 +105,8 @@ export function taskForm(parent) {
     addInput('Due Date:', 'date', form);
     addSelect('Priority:', form);
     addTextArea('Description:', form);
-    div.appendChild(form)
-    parent.appendChild(div)
+    div.appendChild(form);
+    parent.appendChild(div);
 }
 
 export function addli(parent, text) {
