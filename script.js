@@ -1,7 +1,7 @@
 class Task {
     constructor(title, description, dueDate, priority) {
         this.title = title;
-        this.desccription = description;
+        this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
     }
@@ -51,25 +51,29 @@ function clearByClass(parent, cname) {
     })
 };
 
-(function renderTasks(parent) {
+function renderTasks(parent) {
     allProjects.forEach(project => {
         project.tasks.sort((a, b) =>  new Date(a.dueDate) - new Date(b.dueDate)).forEach(task => {
             addTRD(parent, task.title, task.description, task.dueDate, task.priority)
         })
     })
-})(table);
+};
 
-(function renderProjects(parent) {
+renderTasks(table);
+
+function renderProjects(parent) {
     allProjects.forEach(project => {
         addli(parent, project.name);
     })
-})(projectlist);
+}
+
+renderProjects(projectlist);
 
 document.querySelector('.new-project').addEventListener('click', () => {
     document.querySelector('.form-popup').style.display = 'block';
 });
 
-document.querySelector('.pform').addEventListener('submit', (e) => {
+document.querySelector('.project-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const submit = document.querySelector('.submit').value;
     allProjects.push(new Project(submit));
@@ -81,22 +85,42 @@ document.querySelector('.pform').addEventListener('submit', (e) => {
 
 document.querySelector('.new-task').addEventListener('click', () => {
     document.querySelector('.form-popup-task').style.display = 'block';
-    const tform = document.querySelector('.tform');
-    addSelect('Project', getProjectNames(), tform, 'label-select');
+    const tform = document.querySelector('.task-form');
+    addSelect('Project', getProjectNames(), tform, 'label-select', 'plist');
+    addButton('submit', 'submit-task', 'Submit', tform);
+});
+
+document.querySelector('.task-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const tform = document.querySelector('.task-form');
+    const priolist = tform.querySelector('.priority');
+    const projList = tform.querySelector('.plist');
+    const title = tform.querySelector('input[type="text"]').value;
+    const dueDate = tform.querySelector('input[type="date"]').value;
+    const description = tform.querySelector('textarea').value;
+    const priority = Array.from(priolist.querySelectorAll('option')).filter(i => i.selected)[0].textContent;
+    const currentProject = Array.from(projList.querySelectorAll('option')).filter(i => i.selected)[0].textContent;
+    allProjects.filter(project => project.name === currentProject)[0].newtask(title, description, dueDate, priority);
+    setProjects();
+    document.querySelector('.form-popup-task').style.display = 'none'
+    clearNode(table, "TR");
+    addTRH(table);
+    renderTasks(table);
 });
 
 window.onclick = function (e) {
-    const tform = document.querySelector('.tform');
-    switch (true) {
-      case e.target.className === "form-popup":
-        document.querySelector(".form-popup").style.display = "none";
-        break;
-      case e.target.className === "form-popup form-popup-task":
-        document.querySelector(".form-popup-task").style.display = "none";
-        clearByClass(tform, 'label-select');
-        break;
-    }
-  };
+  const tform = document.querySelector(".task-form");
+  switch (true) {
+    case e.target.className === "form-popup":
+      document.querySelector(".form-popup").style.display = "none";
+      break;
+    case e.target.className === "form-popup form-popup-task":
+      document.querySelector(".form-popup-task").style.display = "none";
+      clearByClass(tform, "label-select");
+      clearByClass(tform, "submit-task");
+      break;
+  }
+};
  
 
 

@@ -22,12 +22,13 @@ function addButton(btype, bclass, btext, parent) {
     parent.appendChild(button);
 }
 
-function addSelect(name, arr, parent, elLabel) {
+function addSelect(name, options, parent, lclass, sclass) {
     const label = document.createElement('label');
     label.textContent = name;
-    label.className = elLabel; 
+    label.className = lclass; 
     const select = document.createElement('select');
-    arr.forEach(item => addOption(item, select));
+    select.className = sclass;
+    options.forEach(option => addOption(option, select));
     label.appendChild(select);
     parent.appendChild(label);
 }
@@ -85,7 +86,7 @@ function projectForm(parent) {
     const div = document.createElement('div');
     div.classList.add('form-popup');
     const form = document.createElement('form');
-    form.classList.add('pform');
+    form.classList.add('project-form');
     addH(2, 'New Project', form);
     addInput('Name', 'text', form, 'submit');
     addButton('button', '', 'Cancel', form);
@@ -99,13 +100,12 @@ function taskForm(parent) {
     div.classList.add('form-popup');
     div.classList.add('form-popup-task');
     const form = document.createElement('form');
-    form.classList.add('tform');
+    form.classList.add('task-form');
     addH(2, 'New Task', form);
     addInput('Title:', 'text', form);
     addInput('Due Date:', 'date', form);
-    addSelect('Priority:', ['Low', 'Medium', 'High'], form);
+    addSelect('Priority:', ['Low', 'Medium', 'High'], form, '', 'priority');
     addTextArea('Description:', form);
-    // addSelect('Project', getProjectNames(), form)
     div.appendChild(form);
     parent.appendChild(div);
 }
