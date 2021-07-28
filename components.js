@@ -1,117 +1,87 @@
-function addOption(text, parent) {
-    const option = document.createElement('option');
-    option.textContent = text;
-    parent.appendChild(option)
+function addElement(type, text, parent) {
+  const element = document.createElement(type);
+  element.textContent = text;
+  parent.appendChild(element);
 }
 
 function addInput(name, type, parent, cname) {
-    const label = document.createElement('label');
-    label.textContent = name; 
-    const input = document.createElement('input');
-    input.type = type;
-    input.className = cname;
-    label.appendChild(input)
-    parent.appendChild(label);
+  const label = document.createElement("label");
+  label.textContent = name;
+  const input = document.createElement("input");
+  input.type = type;
+  input.className = cname;
+  label.appendChild(input);
+  parent.appendChild(label);
 }
 
-function addButton(btype, bclass, btext, parent) { 
-    const button = document.createElement('button');
-    button.type = btype;
-    button.className = bclass;
-    button.textContent = btext;
-    parent.appendChild(button);
+function addButton(btype, bclass, btext, parent) {
+  const button = document.createElement("button");
+  button.type = btype;
+  button.className = bclass;
+  button.textContent = btext;
+  parent.appendChild(button);
 }
 
 function addSelect(name, options, parent, lclass, sclass) {
-    const label = document.createElement('label');
-    label.textContent = name;
-    label.className = lclass; 
-    const select = document.createElement('select');
-    select.className = sclass;
-    options.forEach(option => addOption(option, select));
-    label.appendChild(select);
-    parent.appendChild(label);
+  const label = document.createElement("label");
+  label.textContent = name;
+  label.className = lclass;
+  const select = document.createElement("select");
+  select.className = sclass;
+  options.forEach((option) => addElement('option', option, select));
+  label.appendChild(select);
+  parent.appendChild(label);
 }
 
 function addTextArea(name, parent) {
-    const label = document.createElement('label');
-    label.textContent = name; 
-    const textarea = document.createElement('textarea');
-    textarea.rows = 5;
-    textarea.cols = 30;
-    label.appendChild(textarea)
-    parent.appendChild(label);
-}
-
-function addTRChild(type, text, parent) {
-    const tchild = document.createElement(type);
-    tchild.textContent = text;
-    parent.appendChild(tchild)
-}
-
-function addH(num, text, parent) {
-    const h = document.createElement(`h${num}`);
-    h.textContent = text;
-    parent.appendChild(h);    
-}
-
-function addPara(text, parent) {
-    const p = document.createElement('p');
-    p.textContent = text;
-    parent.appendChild(p);    
+  const label = document.createElement("label");
+  label.textContent = name;
+  const textarea = document.createElement("textarea");
+  textarea.rows = 5;
+  textarea.cols = 30;
+  label.appendChild(textarea);
+  parent.appendChild(label);
 }
 
 function addTRH(parent) {
-    const tr = document.createElement('tr');
-    addTRChild('th', 'Title', tr);
-    addTRChild('th', 'Description', tr);
-    addTRChild('th', 'Due Date', tr);
-    addTRChild('th', 'Priority', tr);
-    addTRChild('th', 'Modify', tr);
-    parent.appendChild(tr);
+  const items = ['Title', 'Description', 'Due Date', 'Priority', 'Modify'];
+  const tr = document.createElement("tr");
+  items.forEach(item => {addElement('th', item, tr)})
+  parent.appendChild(tr);
 }
 
-function addTRD(parent, title, description, dueDate, priority) {
-    const tr = document.createElement('tr');
-    addTRChild('td', title, tr);
-    addTRChild('td', description, tr);
-    addTRChild('td', dueDate, tr);
-    addTRChild('td', priority, tr);
-    addButton('button', '', '♺', tr);
-    addButton('button', '', '✍', tr);
-    parent.appendChild(tr)
+function addTRD(parent, arr) {
+  const tr = document.createElement("tr");
+  arr.forEach(item => addElement('td', item, tr))
+  addButton("button", "", "✍", tr.lastChild);
+  addButton("button", "", "♺", tr.lastChild);
+  parent.appendChild(tr);
 }
 
 function projectForm(parent) {
-    const div = document.createElement('div');
-    div.classList.add('form-popup');
-    const form = document.createElement('form');
-    form.classList.add('project-form');
-    addH(2, 'New Project', form);
-    addInput('Name', 'text', form, 'submit');
-    addButton('button', '', 'Cancel', form);
-    addButton('submit', '', 'Add Project', form);
-    div.appendChild(form)
-    parent.appendChild(div)
+  const div = document.createElement("div");
+  div.classList.add("form-popup");
+  const form = document.createElement("form");
+  form.classList.add("project-form");
+  addElement('h2', "New Project", form);
+  addInput("Name", "text", form, "submit");
+  addButton("button", "", "Cancel", form);
+  addButton("submit", "", "Add Project", form);
+  div.appendChild(form);
+  parent.appendChild(div);
 }
 
 function taskForm(parent) {
-    const div = document.createElement('div');
-    div.classList.add('form-popup');
-    div.classList.add('form-popup-task');
-    const form = document.createElement('form');
-    form.classList.add('task-form');
-    addH(2, 'New Task', form);
-    addInput('Title:', 'text', form);
-    addInput('Due Date:', 'date', form);
-    addSelect('Priority:', ['Low', 'Medium', 'High'], form, '', 'priority');
-    addTextArea('Description:', form);
-    div.appendChild(form);
-    parent.appendChild(div);
-}
-
-function addli(parent, text) {
-    const li = document.createElement('li');
-    li.textContent = text;
-    parent.appendChild(li);
+  const div = document.createElement("div");
+  div.classList.add("form-popup");
+  div.classList.add("form-popup-task");
+  const form = document.createElement("form");
+  form.classList.add("task-form");
+  addElement('h2', "New Task", form);
+  addInput("Title:", "text", form);
+  addInput("Due Date:", "date", form);
+  addSelect("Priority:", ["Low", "Medium", "High"], form, "", "priority");
+  addTextArea("Description:", form);
+  div.appendChild(form);
+  parent.appendChild(div);
 }

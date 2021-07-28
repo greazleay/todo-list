@@ -14,56 +14,57 @@ class Project {
     }
 
     newtask(title, description, duedate, priority) {
-        this.tasks.push(new Task(title, description, duedate, priority))
+        this.tasks.push(new Task(title, description, duedate, priority));
+        return this;
     }
 }
 
-function getProjects() {
+const getProjects = () => {
     if (localStorage.length === 0) return [];
     return JSON.parse(localStorage.getItem('allProjects')).map(project => {
-        return new Project(project.name, project.tasks)
+        return new Project(project.name, project.tasks);
     });
 };
 
-function setProjects() {
-    localStorage.setItem('allProjects', JSON.stringify(allProjects))
+const setProjects = () => {
+    localStorage.setItem('allProjects', JSON.stringify(allProjects));
 };
 
 let allProjects = getProjects();
 
-function getProjectNames() {
-    const plist = []
+const getProjectNames = () => {
+    const projectList = []
     allProjects.forEach((project) => {
-    plist.push(project.name);
+    projectList.push(project.name);
   });
-  return plist
+  return projectList;
 }
 
-function clearNode(parent, tag) {
-    Array.from(parent.childNodes).filter(e => e.nodeName === tag).forEach(child => {
-        parent.removeChild(child)
+const clearNode = (parent, tag) => {
+    [...parent.childNodes].filter(e => e.nodeName === tag).forEach(child => {
+        parent.removeChild(child);
     })
 };
 
-function clearByClass(parent, cname) {
-    Array.from(parent.childNodes).filter(e => e.className === cname).forEach(child => {
-        parent.removeChild(child)
+const clearByClass = (parent, cname) => {
+    [...parent.childNodes].filter(e => e.className === cname).forEach(child => {
+        parent.removeChild(child);
     })
 };
 
-function renderTasks(parent) {
+const renderTasks = (parent) => {
     allProjects.forEach(project => {
         project.tasks.sort((a, b) =>  new Date(a.dueDate) - new Date(b.dueDate)).forEach(task => {
-            addTRD(parent, task.title, task.description, task.dueDate, task.priority)
+            addTRD(parent, [task.title, task.description, task.dueDate, task.priority, '']);
         })
     })
 };
 
 renderTasks(table);
 
-function renderProjects(parent) {
+const renderProjects = (parent) => {
     allProjects.forEach(project => {
-        addli(parent, project.name);
+        addElement('li', project.name, parent);
     })
 }
 
@@ -78,9 +79,9 @@ document.querySelector('.project-form').addEventListener('submit', (e) => {
     const submit = document.querySelector('.submit').value;
     allProjects.push(new Project(submit));
     setProjects();
-    document.querySelector('.form-popup').style.display = 'none'
+    document.querySelector('.form-popup').style.display = 'none';
     clearNode(projectlist, "LI");
-    renderProjects(projectlist)
+    renderProjects(projectlist);
 });
 
 document.querySelector('.new-task').addEventListener('click', () => {
@@ -98,11 +99,11 @@ document.querySelector('.task-form').addEventListener('submit', (e) => {
     const title = tform.querySelector('input[type="text"]').value;
     const dueDate = tform.querySelector('input[type="date"]').value;
     const description = tform.querySelector('textarea').value;
-    const priority = Array.from(priolist.querySelectorAll('option')).filter(i => i.selected)[0].textContent;
-    const currentProject = Array.from(projList.querySelectorAll('option')).filter(i => i.selected)[0].textContent;
+    const priority = [...priolist.querySelectorAll('option')].filter(i => i.selected)[0].textContent;
+    const currentProject = [...projList.querySelectorAll('option')].filter(i => i.selected)[0].textContent;
     allProjects.filter(project => project.name === currentProject)[0].newtask(title, description, dueDate, priority);
     setProjects();
-    document.querySelector('.form-popup-task').style.display = 'none'
+    document.querySelector('.form-popup-task').style.display = 'none';
     clearNode(table, "TR");
     addTRH(table);
     renderTasks(table);
@@ -121,7 +122,3 @@ window.onclick = function (e) {
       break;
   }
 };
- 
-
-
-
